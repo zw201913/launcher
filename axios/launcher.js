@@ -11,6 +11,13 @@ var LAUNCHER = function(){
 		OPTIONS: 'OPTIONS'
 	}
 
+	//content-type
+	var CONTENT_TYPE = {
+		NAME: 'Content-Type',
+		JSON: 'application/json;charset=UTF-8',
+		FORM_DATA: 'multipart/form-data'
+	}
+
 	var BASE = {
 		send: function(obj){
 			//判断响应码是否正常，默认的
@@ -171,7 +178,7 @@ var LAUNCHER = function(){
     				formData.append(attr,value);
     			}else if(typeof value === 'object'){
     				//针对{}，[]类型，要使用Blob包装
-    				formData.append(attr, new Blob([JSON.stringify(value)],{type: "application/json" }));
+    				formData.append(attr, new Blob([JSON.stringify(value)],{type:CONTENT_TYPE.JSON}));
     			}else{
     				formData.append(attr,value);
     			}
@@ -192,7 +199,7 @@ var LAUNCHER = function(){
     	postFormData: function(obj){
     		var config = defaultHandleConfig(obj);
     		config.method = METHOD.POST;
-    		config.headers = addHeader(obj.headers,'Content-Type','multipart/form-data');
+    		config.headers = addHeader(obj.headers,CONTENT_TYPE.NAME,CONTENT_TYPE.FORM_DATA);
     		config.data = handleData2FormData(obj.data);
     		config.onUploadProgress = obj.onUploadProgress;
     		BASE.send(config);
@@ -202,7 +209,7 @@ var LAUNCHER = function(){
     	post: function(obj){
     		var config = defaultHandleConfig(obj);
     		config.method = METHOD.POST;
-    		config.headers = addHeader(obj.headers,'Content-Type','application/json;charset=UTF-8');
+    		config.headers = addHeader(obj.headers,CONTENT_TYPE.NAME,CONTENT_TYPE.JSON);
     		config.data = handleData2Json(obj.data);
     		BASE.send(config);
 
@@ -212,7 +219,7 @@ var LAUNCHER = function(){
     	put: function(obj){
     		var config = defaultHandleConfig(obj);
     		config.method = METHOD.PUT
-    		config.headers = addHeader(obj.headers,'Content-Type','application/json;charset=UTF-8');
+    		config.headers = addHeader(obj.headers,CONTENT_TYPE.NAME,CONTENT_TYPE.JSON);
     		config.data = handleData2Json(obj.data);
     		BASE.send(config);
     	},
