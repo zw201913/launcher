@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="launcher.js"></script>
+<head>
+    <title>hah</title>
+</head>
+<body>
+<h1>Hello World</h1>
+
+<input type="file" name="file" id="fileId">
+<input type="button" value="添加user(设置头像)" id="btn" onclick="submit()">
+
+<br>
+<input type="button" value="添加user(不设置头像)" id="btn" onclick="add()">
+
+<br>
+<input type="button" value="添加user v2(不设置头像)" id="btn" onclick="addv2()">
+
+<br>
+<input type="button" value="查询user" id="btn" onclick="users()">
+
+<br>
+<input type="button" value="修改user" id="btn" onclick="update()">
+
+<br>
+<input type="button" value="删除user" id="btn" onclick="deleteUser()">
+</body>
+<script type="text/javascript">
+
+//小伙伴需要针对自己的环境修改URL_PREFIX
+var URL_PREFIX = 'https://localhost';
+
+//查询所有的user
+function users(){
+	LAUNCHER.get({
+		url:'/user/list',
+		baseURL:URL_PREFIX,
+		handleResponseData:function(data){
+			console.log(data);
+		}
+	});
+}
+
+//添加user(设置头像)
+function submit(){
+	 var objFile = document.getElementById("fileId");
+	 LAUNCHER.postFormData({
+		url:"/user/addWithImage",
+		baseURL:URL_PREFIX,
+		data:{
+			"image":objFile.files[0],
+			"user":{
+				'id':1,
+				"name":"Zz",
+				"isMan": true
+			}
+		},
+		onUploadProgress: function(progressEvent){
+			console.log(progressEvent);
+		},
+		handleResponseData:function(data){
+			console.log(data);
+		}
+	});
+}
+
+//推荐
+//添加user(不设置头像)
+function add(){
+	 LAUNCHER.postFormData({
+		url:"/user/add",
+		baseURL:URL_PREFIX,
+		data:{
+			"user":{
+				'id':2,
+				"name":"Zz_2",
+				"isMan": true
+			}
+		},
+		handleResponseData:function(data){
+			console.log(data);
+		}
+	});
+}
+
+//添加user v2(不设置头像)
+function addv2(){
+	 LAUNCHER.post({
+		url:"/user/v2/add",
+		baseURL:URL_PREFIX,
+		data:{
+			'id':3,
+			"name":"Zz_3",
+			"isMan": true
+		},
+		handleResponseData:function(data){
+			console.log(data);
+		}
+	});
+}
+
+//更新user
+function update(){
+	 LAUNCHER.put({
+		url:"/user/update",
+		baseURL:URL_PREFIX,
+		data:{
+			'id':3,
+			"name":"hello",
+			"isMan": true
+		},
+		handleResponseData:function(data){
+			console.log(data);
+		}
+	});
+}
+
+//删除指定的user
+function deleteUser(){
+	LAUNCHER.delete({
+		url:"user/1",
+		baseURL:URL_PREFIX,
+		handleResponseData:function(data){
+			console.log(data);
+		}
+	});
+}
+</script>
+</html>
